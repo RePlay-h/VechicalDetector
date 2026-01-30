@@ -1,0 +1,12 @@
+path: D:/VechicalDetector/data/yolo
+train: images/train
+val: images/val
+
+names:
+  0: car
+  1: van
+  2: truck
+  3: tricycle
+  4: awning-tricycle
+  5: bus
+  6: motor

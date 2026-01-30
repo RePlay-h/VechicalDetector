@@ -22,3 +22,8 @@ matplotlib
 mlflow
 dvc
 dagshub
+timm    
+torchmetrics
+faster-coco-eval
+pycocotools
+albumentations

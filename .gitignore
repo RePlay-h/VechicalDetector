@@ -6,3 +6,8 @@ __pycache__/
 mlruns/
 .dvc/cache/
 .pytest_cache/
+.dvc
+mlartifacts
+mlruns
+runs
+runs_yolo

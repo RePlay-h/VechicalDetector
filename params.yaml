@@ -1,0 +1,139 @@
+preprocess:
+  input: "data/raw"
+  output: "data/processed"
+
+train_smoke:
+  experiment_name: "visdrone_detection"
+  run_name: smoke_run_day1
+  metric_value: 0.123
+  artifact_text: "hello-mlflow"
+  model_path: "models/smoke"
+
+train:
+  train_images: "data/yolo/images/train"
+  val_images: "data/yolo/images/val"
+  test_images: "data/yolo/images/test"
+  train_labels: "data/raw/labels/train"
+  val_labels: "data/raw/labels/val"
+  yolo_train_labels: "data/yolo/labels/train"
+  yolo_val_labels: "data/yolo/labels/val"
+
+
+train_custom:
+  imgsz: 640
+  data_root: data/yolo
+  num_classes: 7
+  output_dir: models/custom
+
+  backbone: efficientnet_b0
+  pretrained_backbone: true
+
+  train_split: train
+  val_split: val
+
+  batch_size: 4
+  num_workers: 4
+  epochs: 10
+
+  lr: 0.0001
+  weight_decay: 0.0001
+  grad_clip: 5.0
+
+  device: cuda
+  seed: 42
+
+  strides: [8, 16, 32]
+  center_sampling_radius: 1.5
+  object_sizes_of_interest:
+    - [0.0, 64.0]
+    - [64.0, 128.0]
+    - [128.0, 100000000.0]
+
+  amp: true
+
+  mlflow_uri: http://127.0.0.1:5000
+  experiment_name: custom_effnet_pan_af
+  run_name: effnet_b0_pan_af_v1
+
+eval:
+  data_root: data/yolo
+  split: val
+  imgsz: 640
+  num_classes: 10
+  weights: models/custom/best.pt
+  device: cuda
+
+  backbone: efficientnet_b0
+  pretrained_backbone: false
+  strides: [8, 16, 32]
+
+  score_thr: 0.25
+  nms_iou: 0.5
+  match_iou: 0.5
+
+  compute_map: true   
+
+demo:
+    custom:
+      weights: models/custom/best.pt
+      num_classes: 7
+      backbone: efficientnet_b0
+      pretrained_backbone: false
+      strides: [8, 16, 32]
+      score_thresh: 0.25
+      nms_iou: 0.5
+      device: cuda
+
+    yolo_fast:
+      weights: yolov8n.pt
+      conf: 0.25
+      iou: 0.5
+      device: cpu
+
+    yolo_new:
+      weights: runs/detect/runs_yolo/accurate11/weights/best.pt
+      conf: 0.25
+      iou: 0.5
+      device: cpu
+
+yolo_fast:
+  data_root: data.yaml
+  data_yaml_out: artifacts/yolo_data.yaml
+  nc: 7
+
+  model: yolov8n.pt
+  imgsz: 640
+  epochs: 50
+  batch: 16
+  device: cuda
+  workers: 4
+  project: runs_yolo
+  name: fast
+
+yolo_new:
+  data_root: data.yaml
+  nc: 10
+
+  model: yolo26n.pt
+  imgsz: 640
+  epochs: 10
+  batch: 8
+  device: cuda
+  workers: 4
+  project: runs_yolo
+  name: accurate
+
+yolo_train:
+    data_root: data.yaml
+    data_yaml_out: artifacts/yolo_data.yaml
+    nc: 7
+
+    model: yolov8n.pt
+    imgsz: 640
+    epochs: 50
+    batch: 16
+    device: cuda
+    workers: 0
+    project: runs_yolo
+    name: fast
+

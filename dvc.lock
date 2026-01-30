@@ -1,0 +1,185 @@
+schema: '2.0'
+stages:
+  prepare:
+    cmd: python ml/src/visdrone_prepare.py
+    deps:
+    - path: data/raw
+      hash: md5
+      md5: 5d0e32947d08a66004f2cb179429b89b.dir
+      size: 2257494874
+      nfiles: 18838
+    - path: ml/src/visdrone_prepare.py
+      hash: md5
+      md5: 5a143b73571116ea79f33cc4f467e3af
+      size: 904
+    outs:
+    - path: data/processed
+      hash: md5
+      md5: 6cd108eefa7b945b4c00616531e9f4ee.dir
+      size: 29
+      nfiles: 1
+  train_smoke:
+    cmd: python ml/src/smoke_train.py
+    deps:
+    - path: ml/src/smoke_train.py
+      hash: md5
+      md5: e04d7901f8c24af65b6554f87c83f879
+      size: 1201
+    - path: params.yaml
+      hash: md5
+      md5: 3e22c842648a7de37670c6c54ca16b1d
+      size: 225
+    outs:
+    - path: models/smoke
+      hash: md5
+      md5: 295468cc0f46ffd60e07e093319ad3c0.dir
+      size: 12
+      nfiles: 1
+  preprocess:
+    cmd: python -m ml.src.visdrone_prepare
+    deps:
+    - path: data/images/train
+      hash: md5
+      md5: 390ebe4bbc8bb6dd18ee9d076215b10c.dir
+      size: 1547923454
+      nfiles: 6471
+    - path: data/images/val
+      hash: md5
+      md5: 37f8046c9946c40c5eb57155839b73fc.dir
+      size: 81210672
+      nfiles: 548
+    - path: data/raw/labels/train
+      hash: md5
+      md5: 862e753a0cdc326cc8b1d3fb55d60624.dir
+      size: 8156581
+      nfiles: 6471
+    - path: data/raw/labels/val
+      hash: md5
+      md5: f412bd11d11db08bba62b3ec0b6bb8de.dir
+      size: 916272
+      nfiles: 548
+    - path: ml/src/visdrone_prepare.py
+      hash: md5
+      md5: 9136ba8e32ea375db8beef7580a7b8c1
+      size: 2253
+    - path: params.yaml
+      hash: md5
+      md5: 7e835f052edfa9a0c1a16a1851174bc7
+      size: 504
+    params:
+      params.yaml:
+        train.train_images: data/images/train
+        train.train_labels: data/raw/labels/train
+        train.val_images: data/images/val
+        train.val_labels: data/raw/labels/val
+        train.yolo_train_labels: data/labels/train
+        train.yolo_val_labels: data/labels/val
+    outs:
+    - path: data/labels/train
+      hash: md5
+      md5: a8c7aa100215d3eafe28781f68d41bc6.dir
+      size: 8826831
+      nfiles: 6295
+    - path: data/labels/val
+      hash: md5
+      md5: 9f2f0b75c12c4f112efffb6ba9c4d635.dir
+      size: 916617
+      nfiles: 543
+  train_custom:
+    cmd: python -m ml.train_custom --params params.yaml
+    deps:
+    - path: data/yolo
+      hash: md5
+      md5: c27a530886ee2fa47b3891a816c3e2c0.dir
+      size: 1945390005
+      nfiles: 15437
+    - path: ml/data/collate.py
+      hash: md5
+      md5: b9e0cc0911ee40a8df1ee09851547d35
+      size: 2465
+    - path: ml/data/yolo_dataset.py
+      hash: md5
+      md5: e337fb23114ffcadcebe136626d28d47
+      size: 3543
+    - path: ml/models/assigner_fcos.py
+      hash: md5
+      md5: 93c685bf04e839c5a94ef4b367841deb
+      size: 4871
+    - path: ml/models/detector.py
+      hash: md5
+      md5: 8abeaa8fb9a9a8f9ccf6fd74a193e501
+      size: 2322
+    - path: ml/models/losses_fcos.py
+      hash: md5
+      md5: 16aad11d8da47446b8a504533e2fa200
+      size: 4917
+    - path: ml/models/postprocess_fcos.py
+      hash: md5
+      md5: 158b60421554af513725c7d44e371ce1
+      size: 6310
+    - path: ml/train_custom.py
+      hash: md5
+      md5: 37563484546871c985189b2272a277d9
+      size: 12244
+    - path: params.yaml
+      hash: md5
+      md5: 3560788c97876ea43859fbdbe543de82
+      size: 1157
+    outs:
+    - path: models/custom/best.pt
+      hash: md5
+      md5: 91fdfac69972f1feb22ccc264d0afa3e
+      size: 144735145
+    - path: models/custom/last.pt
+      hash: md5
+      md5: 1e18dd7e1bc202ab36c1ffdd15fd6d2f
+      size: 144735145
+  train:
+    cmd: python -m ml.train
+    deps:
+    - path: data/yolo
+      hash: md5
+      md5: c27a530886ee2fa47b3891a816c3e2c0.dir
+      size: 1945390005
+      nfiles: 15437
+    - path: ml/data/collate.py
+      hash: md5
+      md5: b9e0cc0911ee40a8df1ee09851547d35
+      size: 2465
+    - path: ml/data/yolo_dataset.py
+      hash: md5
+      md5: e337fb23114ffcadcebe136626d28d47
+      size: 3543
+    - path: ml/models/assigner_fcos.py
+      hash: md5
+      md5: 93c685bf04e839c5a94ef4b367841deb
+      size: 4871
+    - path: ml/models/detector.py
+      hash: md5
+      md5: 8abeaa8fb9a9a8f9ccf6fd74a193e501
+      size: 2322
+    - path: ml/models/losses_fcos.py
+      hash: md5
+      md5: 16aad11d8da47446b8a504533e2fa200
+      size: 4917
+    - path: ml/models/postprocess_fcos.py
+      hash: md5
+      md5: 79cc6fa98dc9a4a9f17217599e11a150
+      size: 6409
+    - path: ml/train.py
+      hash: md5
+      md5: 4769f422cfa78ab68e0f763515038c9a
+      size: 12293
+    - path: params.yaml
+      hash: md5
+      md5: 1581146ff894353f54b5509ff3d66a28
+      size: 1890
+    outs:
+    - path: models/custom/best.pt
+      hash: md5
+      md5: a4d599ffab557c893d05c0c59f40af90
+      size: 144735145
+    - path: models/custom/last.pt
+      hash: md5
+      md5: d740ffe6ff17548e04b9f2e112a0988d
+      size: 144735145
