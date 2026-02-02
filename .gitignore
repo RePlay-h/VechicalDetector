@@ -15,3 +15,4 @@ runs_yolo
 None
 yolo11n.pt 
 yolo26s.pt
+mlflow.db
