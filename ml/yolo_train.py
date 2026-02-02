@@ -33,6 +33,7 @@ def load_cfg(param_path: Path, key: str) -> YoloTrainCfg:
     p = raw[key]
 
     names = p.get("names", None)
+    print(p)
     nc = int(p["nc"]) if "nc" in p else (len(names) if names else None)
 
     return YoloTrainCfg(
@@ -92,7 +93,7 @@ def main() -> None:
     logger.info(f"Training YOLO: {cfg.model} -> {cfg.project}/{cfg.name}")
 
     results = model.train(**train_kwargs)
-    logger.info("Done. Check runs folder for weights (best.pt/last.pt).")
+
 
 
 if __name__ == "__main__":

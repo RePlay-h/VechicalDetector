@@ -8,6 +8,8 @@ from ml.models import build_model
 from ml.models.postprocess_fcos import decode_fcos
 from ml.train import TrainCustomConfig, load_config
 
+from pathlib import Path
+
 class CustomFCOSDetector(BaseDetector):
     def __init__(self, weights_path: str, device: str = "cpu"):
         self.device = torch.device(device)
@@ -15,8 +17,8 @@ class CustomFCOSDetector(BaseDetector):
         p = str(weights_path)
         self.is_jit = p.endswith(".torchscript") or p.endswith(".ts")
 
-        cfg = load_config("params.yaml")
-        model = build_model(
+        cfg = load_config(Path("params.yaml"))
+        self.model = build_model(
                 "efficient_pan_af",
                 num_classes=cfg.num_classes,
                 backbone_name=cfg.backbone,

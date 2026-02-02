@@ -1,7 +1,10 @@
 import streamlit as st
 import requests
+from dotenv import load_dotenv
+import os
 
-API = st.secrets.get("API_URL", "http://localhost:8000")
+load_dotenv()
+API = os.getenv("API_URL")
 
 st.set_page_config(page_title="VehicleDetector", layout="wide")
 st.title("VehicleDetector demo")

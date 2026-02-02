@@ -27,3 +27,4 @@ torchmetrics
 faster-coco-eval
 pycocotools
 albumentations
+python-dotenv

@@ -25,7 +25,7 @@ train_custom:
   num_classes: 7
   output_dir: models/custom
 
-  backbone: efficientnet_b0
+  backbone: efficientnet_b1
   pretrained_backbone: true
 
   train_split: train
@@ -33,7 +33,7 @@ train_custom:
 
   batch_size: 4
   num_workers: 4
-  epochs: 10
+  epochs: 1
 
   lr: 0.0001
   weight_decay: 0.0001
@@ -50,28 +50,8 @@ train_custom:
     - [128.0, 100000000.0]
 
   amp: true
-
-  mlflow_uri: http://127.0.0.1:5000
   experiment_name: custom_effnet_pan_af
-  run_name: effnet_b0_pan_af_v1
-
-eval:
-  data_root: data/yolo
-  split: val
-  imgsz: 640
-  num_classes: 10
-  weights: models/custom/best.pt
-  device: cuda
-
-  backbone: efficientnet_b0
-  pretrained_backbone: false
-  strides: [8, 16, 32]
-
-  score_thr: 0.25
-  nms_iou: 0.5
-  match_iou: 0.5
-
-  compute_map: true   
+  run_name: effnet_b1_pan_af_v2
 
 demo:
     custom:
@@ -98,12 +78,11 @@ demo:
 
 yolo_fast:
   data_root: data.yaml
-  data_yaml_out: artifacts/yolo_data.yaml
   nc: 7
 
-  model: yolov8n.pt
+  model: yolo11n.pt
   imgsz: 640
-  epochs: 50
+  epochs: 1
   batch: 16
   device: cuda
   workers: 4
@@ -112,12 +91,12 @@ yolo_fast:
 
 yolo_new:
   data_root: data.yaml
-  nc: 10
+  nc: 7
 
-  model: yolo26n.pt
+  model: yolo26s.pt
   imgsz: 640
-  epochs: 10
-  batch: 8
+  epochs: 1
+  batch: 16
   device: cuda
   workers: 4
   project: runs_yolo
@@ -125,15 +104,11 @@ yolo_new:
 
 yolo_train:
     data_root: data.yaml
-    data_yaml_out: artifacts/yolo_data.yaml
     nc: 7
 
-    model: yolov8n.pt
     imgsz: 640
     epochs: 50
     batch: 16
     device: cuda
     workers: 0
-    project: runs_yolo
-    name: fast
 

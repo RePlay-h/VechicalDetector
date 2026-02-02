@@ -23,6 +23,11 @@ from ml.models.postprocess_fcos import decode_fcos
 
 import albumentations as A
 
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
 @dataclass
 class TrainCustomConfig:
     data_root: Path
@@ -357,7 +362,9 @@ def main() -> None:
     best_path = cfg.output_dir / "best.pt"
     last_path = cfg.output_dir / "last.pt"
 
-    with mlflow.start_run(run_name=cfg.run_name):
+    tracking_uri = os.getenv("MLFLOW_TRACKING_URI")
+
+    with mlflow.start_run(run_name=tracking_uri):
 
         mlflow.log_params(
             {

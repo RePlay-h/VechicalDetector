@@ -11,3 +11,7 @@ mlartifacts
 mlruns
 runs
 runs_yolo
+.env
+None
+yolo11n.pt 
+yolo26s.pt

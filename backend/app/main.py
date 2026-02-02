@@ -42,13 +42,16 @@ async def detect_image(
     iou_thr: float = Form(0.6),
     file: UploadFile = File(...),
 ):
+
     data = await file.read()
+
     img_arr = np.frombuffer(data, dtype=np.uint8)
     img = cv2.imdecode(img_arr, cv2.IMREAD_COLOR)
+
     if img is None:
         raise HTTPException(status_code=400, detail="Invalid image")
-
     det = get_detector(model)
+
     dets = det.predict(img, score_thr=score_thr, iou_thr=iou_thr)
 
     resp = DetectResponse(

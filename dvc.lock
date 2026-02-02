@@ -38,16 +38,6 @@ stages:
   preprocess:
     cmd: python -m ml.src.visdrone_prepare
     deps:
-    - path: data/images/train
-      hash: md5
-      md5: 390ebe4bbc8bb6dd18ee9d076215b10c.dir
-      size: 1547923454
-      nfiles: 6471
-    - path: data/images/val
-      hash: md5
-      md5: 37f8046c9946c40c5eb57155839b73fc.dir
-      size: 81210672
-      nfiles: 548
     - path: data/raw/labels/train
       hash: md5
       md5: 862e753a0cdc326cc8b1d3fb55d60624.dir
@@ -64,23 +54,23 @@ stages:
       size: 2253
     - path: params.yaml
       hash: md5
-      md5: 7e835f052edfa9a0c1a16a1851174bc7
-      size: 504
+      md5: 1855e392f6b3fb919a2d2e2daf362a61
+      size: 2086
     params:
       params.yaml:
-        train.train_images: data/images/train
+        train.train_images: data/yolo/images/train
         train.train_labels: data/raw/labels/train
-        train.val_images: data/images/val
+        train.val_images: data/yolo/images/val
         train.val_labels: data/raw/labels/val
-        train.yolo_train_labels: data/labels/train
-        train.yolo_val_labels: data/labels/val
+        train.yolo_train_labels: data/yolo/labels/train
+        train.yolo_val_labels: data/yolo/labels/val
     outs:
-    - path: data/labels/train
+    - path: data/yolo/labels/train
       hash: md5
       md5: a8c7aa100215d3eafe28781f68d41bc6.dir
       size: 8826831
       nfiles: 6295
-    - path: data/labels/val
+    - path: data/yolo/labels/val
       hash: md5
       md5: 9f2f0b75c12c4f112efffb6ba9c4d635.dir
       size: 916617
@@ -139,47 +129,137 @@ stages:
     deps:
     - path: data/yolo
       hash: md5
-      md5: c27a530886ee2fa47b3891a816c3e2c0.dir
-      size: 1945390005
-      nfiles: 15437
+      md5: af5321c13daa054d2a30f807fb33f2a5.dir
+      size: 1951607188
+      nfiles: 15439
     - path: ml/data/collate.py
       hash: md5
       md5: b9e0cc0911ee40a8df1ee09851547d35
       size: 2465
     - path: ml/data/yolo_dataset.py
       hash: md5
-      md5: e337fb23114ffcadcebe136626d28d47
-      size: 3543
+      md5: 8c05db80dd7745d03e114df7cef8d52f
+      size: 3679
     - path: ml/models/assigner_fcos.py
       hash: md5
-      md5: 93c685bf04e839c5a94ef4b367841deb
-      size: 4871
+      md5: 27426c65e9a84801ef83e5d0b65dd0ae
+      size: 4882
     - path: ml/models/detector.py
       hash: md5
-      md5: 8abeaa8fb9a9a8f9ccf6fd74a193e501
+      md5: e810c10e6b42e18c8191e37d963b5a33
       size: 2322
     - path: ml/models/losses_fcos.py
       hash: md5
-      md5: 16aad11d8da47446b8a504533e2fa200
-      size: 4917
+      md5: 8099a8dbfbcce23f7dfad62e8b572491
+      size: 3724
     - path: ml/models/postprocess_fcos.py
       hash: md5
-      md5: 79cc6fa98dc9a4a9f17217599e11a150
-      size: 6409
+      md5: 5416c3180cbf3d52cef8020d4f128c78
+      size: 6418
     - path: ml/train.py
       hash: md5
-      md5: 4769f422cfa78ab68e0f763515038c9a
-      size: 12293
+      md5: 20f7c6c989f1f56014f73e2bbdddf254
+      size: 13976
     - path: params.yaml
       hash: md5
-      md5: 1581146ff894353f54b5509ff3d66a28
-      size: 1890
+      md5: 1855e392f6b3fb919a2d2e2daf362a61
+      size: 2086
     outs:
     - path: models/custom/best.pt
       hash: md5
-      md5: a4d599ffab557c893d05c0c59f40af90
-      size: 144735145
+      md5: 2d2e0222e26f889171c107556718169e
+      size: 174912953
     - path: models/custom/last.pt
       hash: md5
-      md5: d740ffe6ff17548e04b9f2e112a0988d
-      size: 144735145
+      md5: 80a5507c0bd04a19f3c824a4e7408b85
+      size: 174912953
+  yolo_train_new:
+    cmd: python -m ml.yolo_train --params params.yaml --cfg-key yolo_new
+    deps:
+    - path: data.yaml
+      hash: md5
+      md5: 3a5f55f2d7fb5611021e3fa5e112f9fa
+      size: 174
+    - path: data/yolo/images/train
+      hash: md5
+      md5: 390ebe4bbc8bb6dd18ee9d076215b10c.dir
+      size: 1547923454
+      nfiles: 6471
+    - path: data/yolo/images/val
+      hash: md5
+      md5: 37f8046c9946c40c5eb57155839b73fc.dir
+      size: 81210672
+      nfiles: 548
+    - path: data/yolo/labels/train
+      hash: md5
+      md5: a8c7aa100215d3eafe28781f68d41bc6.dir
+      size: 8826831
+      nfiles: 6295
+    - path: data/yolo/labels/val
+      hash: md5
+      md5: 9f2f0b75c12c4f112efffb6ba9c4d635.dir
+      size: 916617
+      nfiles: 543
+    - path: ml/yolo_train.py
+      hash: md5
+      md5: 3badb25a36970c2bee165b2ee4f0fcbd
+      size: 2495
+    - path: params.yaml
+      hash: md5
+      md5: 1855e392f6b3fb919a2d2e2daf362a61
+      size: 2086
+    params:
+      params.yaml:
+        yolo_train:
+          data_root: data.yaml
+          nc: 7
+          imgsz: 640
+          epochs: 50
+          batch: 16
+          device: cuda
+          workers: 0
+  yolo_train_fast:
+    cmd: python -m ml.yolo_train --params params.yaml --cfg-key yolo_fast
+    deps:
+    - path: data.yaml
+      hash: md5
+      md5: 3a5f55f2d7fb5611021e3fa5e112f9fa
+      size: 174
+    - path: data/yolo/images/train
+      hash: md5
+      md5: 390ebe4bbc8bb6dd18ee9d076215b10c.dir
+      size: 1547923454
+      nfiles: 6471
+    - path: data/yolo/images/val
+      hash: md5
+      md5: 37f8046c9946c40c5eb57155839b73fc.dir
+      size: 81210672
+      nfiles: 548
+    - path: data/yolo/labels/train
+      hash: md5
+      md5: a8c7aa100215d3eafe28781f68d41bc6.dir
+      size: 8826831
+      nfiles: 6295
+    - path: data/yolo/labels/val
+      hash: md5
+      md5: 9f2f0b75c12c4f112efffb6ba9c4d635.dir
+      size: 916617
+      nfiles: 543
+    - path: ml/yolo_train.py
+      hash: md5
+      md5: 3badb25a36970c2bee165b2ee4f0fcbd
+      size: 2495
+    - path: params.yaml
+      hash: md5
+      md5: 1855e392f6b3fb919a2d2e2daf362a61
+      size: 2086
+    params:
+      params.yaml:
+        yolo_train:
+          data_root: data.yaml
+          nc: 7
+          imgsz: 640
+          epochs: 50
+          batch: 16
+          device: cuda
+          workers: 0

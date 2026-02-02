@@ -2,6 +2,8 @@ from typing import List, Tuple
 import cv2
 import numpy as np
 
+
+
 def draw_boxes(
     image_bgr: np.ndarray,
     dets: List[Tuple[float,float,float,float,float,int]],

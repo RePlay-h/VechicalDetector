@@ -4,13 +4,11 @@ stages:
       deps:
         - ml/src/visdrone_prepare.py
         - params.yaml
-        - data/images/train
-        - data/images/val
         - data/raw/labels/train
         - data/raw/labels/val
       outs:
-        - data/labels/train
-        - data/labels/val
+        - data/yolo/labels/train
+        - data/yolo/labels/val
       params:
         - train.train_images
         - train.val_images
@@ -18,14 +16,6 @@ stages:
         - train.val_labels
         - train.yolo_train_labels
         - train.yolo_val_labels
-  
-  train_smoke:
-    cmd: python ml/src/smoke_train.py 
-    deps:
-      - ml/src/smoke_train.py
-      - params.yaml
-    outs:
-      - models/smoke
       
   train:
     cmd: python -m ml.train
@@ -44,3 +34,28 @@ stages:
       - models/custom/last.pt
 
   
+  yolo_train_new:
+    cmd: python -m ml.yolo_train --params params.yaml --cfg-key yolo_new
+    deps:
+      - ml/yolo_train.py
+      - params.yaml
+      - data.yaml
+      - data/yolo/images/train
+      - data/yolo/images/val
+      - data/yolo/labels/train
+      - data/yolo/labels/val
+    params:
+      - yolo_train
+
+  yolo_train_fast:
+    cmd: python -m ml.yolo_train --params params.yaml --cfg-key yolo_fast
+    deps:
+      - ml/yolo_train.py
+      - params.yaml
+      - data.yaml
+      - data/yolo/images/train
+      - data/yolo/images/val
+      - data/yolo/labels/train
+      - data/yolo/labels/val
+    params:
+      - yolo_train
