@@ -56,14 +56,14 @@ dvc repro
 
 ---
 
-## 7) MLflow
+## 5) MLflow
 
-### 7.1 Запуск MLflow сервера локально
+### 5.1 Запуск MLflow сервера локально
 ```bash
 mlflow server --host 127.0.0.1 --port 5000
 ```
 
-### 7.2 Логирование YOLO в MLflow
+### 5.2 Логирование YOLO в MLflow
 Ultralytics умеет логировать в MLflow (при установленном `mlflow`).  
 Пример для Windows PowerShell:
 ```powershell
@@ -74,14 +74,14 @@ python -m ml.yolo_train --params params.yaml --cfg-key yolo_fast
 
 ---
 
-## 8) Backend (FastAPI)
+## 6) Backend (FastAPI)
 
 Backend умеет:
 - вернуть список доступных моделей
 - прогнать изображение и вернуть bbox’ы (JSON)
 - вернуть PNG с отрисованными bbox’ами
 
-### 8.1 Запуск backend локально
+### 6.1 Запуск backend локально
 Из корня репозитория:
 ```bash
 uvicorn backend.app.main:app --host 0.0.0.0 --port 8000 --reload
@@ -94,7 +94,7 @@ uvicorn backend.app.main:app --host 0.0.0.0 --port 8000 --reload
 
 ---
 
-## 9) Frontend (Streamlit)
+## 7) Frontend (Streamlit)
 
 UI позволяет:
 - загрузить изображение
@@ -102,12 +102,12 @@ UI позволяет:
 - настроить `score_thr` и `iou_thr`
 - увидеть результат и список детекций
 
-### 9.1 Запуск frontend локально
+### 7.1 Запуск frontend локально
 ```bash
 streamlit run frontend/app.py
 ```
 
-### 9.2 Адрес backend (через переменную окружения)
+### 7.2 Адрес backend (через переменную окружения)
 По умолчанию используется `http://localhost:8000`.  
 Можно переопределить:
 
@@ -125,7 +125,7 @@ streamlit run frontend/app.py
 
 ---
 
-## 10) Тесты
+## 8) Тесты
 
 ```bash
 pytest -q
@@ -133,7 +133,7 @@ pytest -q
 
 ---
 
-## 11) Частые проблемы
+## 9) Частые проблемы
 
 ### StreamlitSecretNotFoundError
 Не используйте `st.secrets` без файла `frontend/.streamlit/secrets.toml`.  
@@ -147,13 +147,4 @@ pytest -q
 
 ---
 
-## 12) Дальнейшие шаги
-- Async backend с очередью (Redis + worker) для видео-инференса
-- DVC stage для eval/инференса
-- Деплой Streamlit Cloud / аналог
-- Видео-презентация приложения
 
----
-
-## Лицензия
-Учебный проект.
