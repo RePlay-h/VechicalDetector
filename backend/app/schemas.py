@@ -7,7 +7,7 @@ class Detection(BaseModel):
     x2: float
     y2: float
     score: float
-    label: int
+    label: str
 
 class DetectResponse(BaseModel):
     model: str

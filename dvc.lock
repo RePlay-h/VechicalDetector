@@ -54,8 +54,8 @@ stages:
       size: 2253
     - path: params.yaml
       hash: md5
-      md5: 1855e392f6b3fb919a2d2e2daf362a61
-      size: 2086
+      md5: ac7d557c458b80706f06dec4fbc89a39
+      size: 1914
     params:
       params.yaml:
         train.train_images: data/yolo/images/train
@@ -158,21 +158,21 @@ stages:
       size: 6418
     - path: ml/train.py
       hash: md5
-      md5: 20f7c6c989f1f56014f73e2bbdddf254
-      size: 13976
+      md5: 617c5572bd96f90ef036dcaa75eb632f
+      size: 13974
     - path: params.yaml
       hash: md5
-      md5: 1855e392f6b3fb919a2d2e2daf362a61
-      size: 2086
+      md5: 96c3612516057369a257e80a5172959d
+      size: 1914
     outs:
     - path: models/custom/best.pt
       hash: md5
-      md5: 2d2e0222e26f889171c107556718169e
-      size: 174912953
+      md5: fe5b0f5407c4b7f2b7bcc5907acf7ea0
+      size: 144652265
     - path: models/custom/last.pt
       hash: md5
-      md5: 80a5507c0bd04a19f3c824a4e7408b85
-      size: 174912953
+      md5: 4e0bf91bdfcb80f3edeb5ed023c4a122
+      size: 144652265
   yolo_train_new:
     cmd: python -m ml.yolo_train --params params.yaml --cfg-key yolo_new
     deps:
@@ -206,8 +206,8 @@ stages:
       size: 2495
     - path: params.yaml
       hash: md5
-      md5: 1855e392f6b3fb919a2d2e2daf362a61
-      size: 2086
+      md5: 96c3612516057369a257e80a5172959d
+      size: 1914
     params:
       params.yaml:
         yolo_train:
@@ -251,8 +251,8 @@ stages:
       size: 2495
     - path: params.yaml
       hash: md5
-      md5: 1855e392f6b3fb919a2d2e2daf362a61
-      size: 2086
+      md5: ac7d557c458b80706f06dec4fbc89a39
+      size: 1914
     params:
       params.yaml:
         yolo_train:

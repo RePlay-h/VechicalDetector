@@ -3,6 +3,16 @@ import numpy as np
 from ultralytics import YOLO
 from .base import BaseDetector
 
+target_names = {
+    0: "car",
+    1: "van",
+    2: "truck",
+    3: "tricycle",
+    4: "awning-tricycle",
+    5: "bus",
+    6: "motor",
+}
+
 class YoloDetector(BaseDetector):
     def __init__(self, weights_path: str):
         self.model = YOLO(weights_path)
@@ -25,5 +35,5 @@ class YoloDetector(BaseDetector):
         labels = res.boxes.cls.cpu().numpy().astype(int)
 
         for (x1,y1,x2,y2), s, c in zip(boxes, scores, labels):
-            out.append((float(x1), float(y1), float(x2), float(y2), float(s), int(c)))
+            out.append((float(x1), float(y1), float(x2), float(y2), float(s), target_names[int(c)]))
         return out

@@ -355,16 +355,16 @@ def main() -> None:
     scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=3, gamma=0.9)
     scaler = torch.amp.GradScaler("cuda", (device.type=="cuda"))
 
-    mlflow.set_tracking_uri(cfg.mlflow_uri)
+    tracking_uri = os.getenv("MLFLOW_TRACKING_URI")
+
+    mlflow.set_tracking_uri(tracking_uri)
     mlflow.set_experiment(cfg.experiment_name)
 
     best_val = math.inf
     best_path = cfg.output_dir / "best.pt"
     last_path = cfg.output_dir / "last.pt"
 
-    tracking_uri = os.getenv("MLFLOW_TRACKING_URI")
-
-    with mlflow.start_run(run_name=tracking_uri):
+    with mlflow.start_run(run_name=cfg.run_name):
 
         mlflow.log_params(
             {

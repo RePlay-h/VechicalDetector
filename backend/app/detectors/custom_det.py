@@ -6,9 +6,19 @@ import cv2
 from .base import BaseDetector
 from ml.models import build_model
 from ml.models.postprocess_fcos import decode_fcos
-from ml.train import TrainCustomConfig, load_config
+from ml.train import  load_config
 
 from pathlib import Path
+
+target_names = {
+    0: "car",
+    1: "van",
+    2: "truck",
+    3: "tricycle",
+    4: "awning-tricycle",
+    5: "bus",
+    6: "motor",
+}
 
 class CustomFCOSDetector(BaseDetector):
     def __init__(self, weights_path: str, device: str = "cpu"):
@@ -23,11 +33,12 @@ class CustomFCOSDetector(BaseDetector):
                 num_classes=cfg.num_classes,
                 backbone_name=cfg.backbone,
                 pretrained_backbone=cfg.pretrained_backbone,
-        ).to(device).eval()
+        ).to(device)
 
         ckpt = torch.load(p, map_location=self.device)
-        state = ckpt["state_dict"] if isinstance(ckpt, dict) and "state_dict" in ckpt else ckpt
-        self.model.load_state_dict(state, strict=False)
+        self.model.load_state_dict(ckpt["model_state"], strict=True)
+
+        self.model.eval()
         
         self.decode_fcos = decode_fcos
 
@@ -56,8 +67,8 @@ class CustomFCOSDetector(BaseDetector):
         boxes = dets.boxes.detach().cpu().numpy()
         scores = dets.scores.detach().cpu().numpy()
         labels = dets.labels.detach().cpu().numpy().astype(int)
-
+     
         out_list: List[Tuple[float,float,float,float,float,int]] = []
         for (x1,y1,x2,y2), s, c in zip(boxes, scores, labels):
-            out_list.append((float(x1), float(y1), float(x2), float(y2), float(s), int(c)))
+            out_list.append((float(x1), float(y1), float(x2), float(y2), float(s), target_names[int(c)]))
         return out_list
